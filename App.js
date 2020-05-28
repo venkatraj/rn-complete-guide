@@ -9,9 +9,15 @@ export default function App() {
   const handleAddGoal = (enteredGoal) => {
     setGoals((currentGoals) => [
       ...currentGoals,
-      { key: Math.random().toString(), goal: enteredGoal },
+      { id: Math.random().toString(), goal: enteredGoal },
     ]);
-    // setEnteredGoal('');
+    setEnteredGoal('');
+  };
+
+  const handleDeleteGoal = (itemID) => {
+    setGoals((currentGoals) => {
+      return currentGoals.filter((item) => item.id !== itemID);
+    });
   };
 
   return (
@@ -19,7 +25,13 @@ export default function App() {
       <GoalInput handleAddGoal={handleAddGoal} />
       <FlatList
         data={goals}
-        renderItem={(itemData) => <GoalItem title={itemData.item.goal} />}
+        renderItem={(itemData) => (
+          <GoalItem
+            itemID={itemData.item.id}
+            onDelete={handleDeleteGoal}
+            title={itemData.item.goal}
+          />
+        )}
       />
     </View>
   );
