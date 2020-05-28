@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
 export default function App() {
   const [enteredGoal, setEnteredGoal] = useState('');
-  const [goals, setGoals] = useState([]);
+  const [goals, setGoals] = useState(new Set());
 
   const handleGoalInput = (enteredText) => {
     setEnteredGoal(enteredText);
   };
 
   const handleAddGoal = () => {
-    setGoals((currentGoals) => [...currentGoals, enteredGoal]);
+    setGoals((currentGoals) => new Set(currentGoals).add(enteredGoal));
     setEnteredGoal('');
     console.log(goals);
   };
@@ -26,7 +26,11 @@ export default function App() {
         />
         <Button title="ADD" onPress={handleAddGoal} />
       </View>
-      <View></View>
+      <View>
+        {Array.from(goals).map((goal) => (
+          <Text key={goal}>{goal}</Text>
+        ))}
+      </View>
     </View>
   );
 }
