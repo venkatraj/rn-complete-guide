@@ -1,39 +1,68 @@
 import React, { useState } from 'react';
-import { Button, View, TextInput, StyleSheet } from 'react-native';
+import { Button, Modal, View, TextInput, StyleSheet } from 'react-native';
 
 const GoalInput = (props) => {
-  const { handleAddGoal } = props;
+  const { visible, onCancel, handleAddGoal } = props;
   const [enteredGoal, setEnteredGoal] = useState('');
 
   const handleGoalInput = (enteredText) => {
     setEnteredGoal(enteredText);
   };
 
+  const handleOnAdd = () => {
+    handleAddGoal(enteredGoal);
+    setEnteredGoal('');
+  };
+
+  const handleOnCancel = () => {
+    onCancel();
+    setEnteredGoal('');
+  };
+
   return (
-    <View style={styles.goalInputContainer}>
-      <TextInput
-        placeholder="Course Goal"
-        style={styles.input}
-        onChangeText={handleGoalInput}
-        value={enteredGoal}
-      />
-      <Button title="ADD" onPress={() => handleAddGoal(enteredGoal)} />
-    </View>
+    <Modal visible={visible} animationType="fade">
+      <View style={styles.goalInputContainer}>
+        <View>
+          <TextInput
+            placeholder="Course Goal"
+            onChangeText={handleGoalInput}
+            value={enteredGoal}
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <View style={styles.button}>
+            <Button title="CANCEL" color="red" onPress={handleOnCancel} />
+          </View>
+          <View style={styles.button}>
+            <Button title="ADD" onPress={handleOnAdd} />
+          </View>
+        </View>
+      </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
   goalInputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   input: {
     borderColor: 'black',
-    borderWidth: 1,
-    padding: 5,
-    margin: 10,
-    flexGrow: 1,
+    borderBottomWidth: 2,
+    width: 250,
+    marginBottom: 10,
+    lineHeight: 1,
+  },
+  buttonContainer: {
+    width: 200,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  button: {
+    width: 80,
   },
 });
 
